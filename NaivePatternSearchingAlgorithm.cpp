@@ -16,8 +16,7 @@ vector<int> Leftmost(string &str, string &check)
     }
     int j = 0, i = 0;
     int k = i + 1;
-    // Include all the commented lines to change the program for same elements also and when the lines are not included it works
-    // only for distinct elements.
+    // Include all the commented lines to change the program for same elements also and when the lines are not included it works only for distinct elements.
     while (i < str.length()) //&& k < str.length()
     {
         if (j == check.length())

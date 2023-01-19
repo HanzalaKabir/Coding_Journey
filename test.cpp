@@ -5,39 +5,68 @@
 #include <unordered_map>
 #include <algorithm>
 using namespace std;
-long long Power(long long n, long long x, long long r, long long res)
+struct Node
 {
-    if (x == r)
+    int data;
+    struct Node *next;
+};
+struct Node *head = NULL;
+Node *Begin(int new_data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    head = new_node;
+    new_node->next = head;
+}
+Node *insertBegin(int new_data)
+{
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = new_data;
+    head->next = new_node;
+    new_node->next = head;
+    head = new_node;
+}
+void rPrint(Node *head)
+{ // Print singly linked list
+    if (head == NULL)
     {
-        res = res * n;
-        res = res % 1000000007;
-        return res;
+        return;
     }
-    long long ans = res * n;
-    x++;
-    Power(n, x, r, ans);
+    cout << (head->data) << " ";
+    Node *print = head->next;
+    while (print != head)
+    {
+        print = print->next;
+        cout << (print->data) << " ";
+    }
+    // cout << (head->data) << " ";
+    // rPrint(head->next);
 }
-long long power(long long n, long long r)
+Node *deleteKth(Node *head, int key)
 {
-    long long x = 1, res = 1;
-    long long ans = Power(n, x, r, res);
-    return ans;
+    if (head == NULL)
+    {
+        return NULL;
+    }
+    int pos = 1;
+    Node *curr = head;
+    while (pos != key - 1)
+    {
+        curr = curr->next;
+        pos++;
+    }
+    Node *temp = curr->next;
+    curr->next = curr->next->next;
+    delete temp;
+    return head;
 }
-// long long power(int n, int r)
-// {
-//     long long res = 1;
-//     for (int i = 1; i <= r; i++)
-//     {
-//         res = res * n;
-//     }
-//     res = res % 1000000007;
-//     return res;
-// }
 int main()
 {
-    long long n, r;
-    cin >> n >> r;
-    long long ans = power(n, r);
-    cout << ans;
+    Begin(5);
+    insertBegin(10);
+    insertBegin(33);
+    insertBegin(50);
+    // head = deleteKth(head, 50);
+    rPrint(head);
     return 0;
 }
