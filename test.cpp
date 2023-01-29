@@ -3,70 +3,77 @@
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
+#include <stack>
 #include <algorithm>
 using namespace std;
-struct Node
-{
-    int data;
-    struct Node *next;
-};
-struct Node *head = NULL;
-Node *Begin(int new_data)
-{
-    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
-    new_node->data = new_data;
-    head = new_node;
-    new_node->next = head;
+vector<int> PreviousSmaller(int arr[], int n)
+{ // 6 2 5 4 1 5 6
+    vector<int> res;
+    stack<int> small;
+    small.push(arr[0]);
+    res.push_back(-1);
+    cout << "-1 ";
+    int index;
+    int count = 0;
+    for (int i = 1; i < n; i++)
+    {
+        index = i;
+        while (small.empty() == false && small.top() > arr[i])
+        {
+            index--;
+            count++;
+            small.pop();
+        }
+        int ps = small.empty() ? -1 : index - 1;
+        res.push_back(ps);
+        cout << ps << " ";
+        small.push(arr[i]);
+    }
+    cout << endl;
+    return res;
 }
-Node *insertBegin(int new_data)
+vector<int> NextSmaller(int arr[], int n)
 {
-    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
-    new_node->data = new_data;
-    head->next = new_node;
-    new_node->next = head;
-    head = new_node;
-}
-void rPrint(Node *head)
-{ // Print singly linked list
-    if (head == NULL)
+    vector<int> res;
+    stack<int> smaller;
+    // smaller.push(arr[n - 1]);
+    // res.push_back(n);
+    int index;
+    for (int i = n - 1; i >= 0; i--)
     {
-        return;
+        index = i;
+        int count = 0;
+        while (smaller.empty() == false && smaller.top() > arr[i])
+        {
+            count++;
+            smaller.pop();
+        }
+        int ns = smaller.empty() ? n : index - 1;
+        res.push_back(ns);
+        smaller.push(arr[i]);
     }
-    cout << (head->data) << " ";
-    Node *print = head->next;
-    while (print != head)
+    reverse(res.begin(), res.end());
+    for (int i = 0; i < n; i++)
     {
-        print = print->next;
-        cout << (print->data) << " ";
+        cout << res[i] << " ";
     }
-    // cout << (head->data) << " ";
-    // rPrint(head->next);
-}
-Node *deleteKth(Node *head, int key)
-{
-    if (head == NULL)
-    {
-        return NULL;
-    }
-    int pos = 1;
-    Node *curr = head;
-    while (pos != key - 1)
-    {
-        curr = curr->next;
-        pos++;
-    }
-    Node *temp = curr->next;
-    curr->next = curr->next->next;
-    delete temp;
-    return head;
+    cout << endl;
+    return res;
 }
 int main()
 {
-    Begin(5);
-    insertBegin(10);
-    insertBegin(33);
-    insertBegin(50);
-    // head = deleteKth(head, 50);
-    rPrint(head);
+    int arr[] = {6, 2, 5, 4, 5, 1, 6};
+    int n = 7;
+    int curr, res = 0;
+    vector<int> prev = PreviousSmaller(arr, n);
+    vector<int> next = NextSmaller(arr, n);
+    for (int i = 0; i < n; i++)
+    {
+        curr = arr[i];
+        curr += (arr[i] - prev[i] - 1) * arr[i];
+        curr += (next[i] - arr[i] - 1) * arr[i];
+        res = max(res, curr);
+    }
+    cout << res;
     return 0;
 }

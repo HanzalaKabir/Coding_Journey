@@ -15,6 +15,34 @@ struct node
         next = NULL;
     }
 };
+node *createLinkedList(int n)
+{
+    node *head = NULL;
+    node *tail = NULL;
+
+    for (int i = 0; i < n; i++)
+    {
+        int x;
+        cout << "Enter data for node " << i + 1 << ": ";
+        cin >> x;
+
+        node *newNode = new node(x);
+        newNode->next = NULL;
+
+        if (head == NULL)
+        {
+            head = newNode;
+            tail = newNode;
+        }
+        else
+        {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    return head;
+}
 node *insertBegin(node *head, int x)
 {
     node *temp = new node(x);
@@ -139,12 +167,12 @@ int main()
     int n, data;
     cout << "Enter the number of nodes in list:";
     cin >> n;
+    head = createLinkedList(n);
+    cout << "List created is:" << endl;
+    rPrint(head);
     cout << "Enter data to be inserted in list:" << endl;
-    for (int i = 0; i < n; i++)
-    {
-        cin >> data;
-        head = insertEnd(head, data);
-    }
+    cin >> data;
+    head = insertEnd(head, data);
     cout << "List is:" << endl;
     rPrint(head);
     // cout << "Enter data to be inserted at beggining of list:" << endl;
