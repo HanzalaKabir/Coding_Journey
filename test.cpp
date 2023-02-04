@@ -7,63 +7,52 @@
 #include <algorithm>
 #include <cmath>
 using namespace std;
-stack<int> _push(int arr[], int n)
+vector<string> recursive(int arr[], int n, int i, int k, int j, vector<string> dig)
 {
-    stack<int> res;
-    int min = arr[0];
-    res.push(arr[0]);
-    for (int i = 1; i < n; i++)
+    if (k == n)
     {
-        if (arr[i] < min)
-        {
-            min = arr[i];
-        }
-        res.push(arr[i]);
+        vector<string> res;
+        return res;
     }
-    res.push(min);
+    vector<string> res;
+    string str;
+    while (j < n)
+    {
+        str += dig[i][j];
+        cout << str;
+        vector<string> temp = recursive(arr, n, arr[k + 1], k + 1, j, dig);
+        str += temp[0];
+        if (i != arr[0])
+        {
+            res.push_back(str);
+            return res;
+        }
+        else
+        {
+            res.push_back(str);
+            j++;
+        }
+    }
+    res.push_back(str);
     return res;
 }
-stack<int> _push1(stack<int> res)
+vector<string> possibleWords(int arr[], int n)
 {
-    stack<int> check = res;
-    int min = res.top();
-    res.pop();
-    while (!res.empty())
-    {
-        if (res.top() < min)
-        {
-            min = res.top();
-        }
-        res.pop();
-    }
-    check.push(min);
-    return check;
-}
-void _getMinAtPop(stack<int> s)
-{
-    int min = s.top();
-    s.pop();
-    while (!s.empty())
-    {
-        if (min == s.top())
-        {
-            s.pop();
-            cout << min << " ";
-            s = _push1(s);
-            min = s.top();
-            s.pop();
-            continue;
-        }
-        s.pop();
-        cout << min << " ";
-    }
+    vector<string> dig = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    int k = 0, j = 0;
+    int i = arr[k];
+    cout << i << endl;
+    vector<string> res = recursive(arr, n, i, k, j, dig);
+    return res;
 }
 int main()
 {
-    int n = 6;
-    int arr[] = {0, 2, 3, 4, 5, -1};
-    stack<int> mys = _push(arr, n);
-    _getMinAtPop(mys);
-    cout << endl;
+    int arr[] = {2, 3, 4};
+    int n = 3;
+    vector<string> res = possibleWords(arr, n);
+    for (int i = 0; i < res.size(); i++)
+    {
+        cout << res[i] << " ";
+    }
     return 0;
 }

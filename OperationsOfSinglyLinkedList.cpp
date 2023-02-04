@@ -147,6 +147,38 @@ int searchInSingly(node *head, int data)
         return res + 1;
     }
 }
+bool checkLoop(int *head)
+{
+    class Solution
+    {
+    public:
+        // Function to check if the linked list has a loop.
+        bool detectLoop(node *head)
+        {
+            // your code here
+            if (head->next == NULL)
+            {
+                return false;
+            }
+            node *slow = head;
+            node *fast = head->next->next;
+            while (fast->next->next != NULL)
+            {
+                if (fast == slow)
+                {
+                    return true;
+                }
+                slow = slow->next;
+                fast = fast->next->next;
+                if (fast->next == NULL)
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+    };
+}
 void rPrint(node *head)
 { // Print singly linked list
     if (head == NULL)

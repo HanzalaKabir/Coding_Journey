@@ -1,11 +1,12 @@
 {
-    "files.associations": {
-        "*html": "html",
-        "iostream": "cpp",
-        "ostream": "cpp",
-        "xutility": "cpp",
-        "algorithm": "cpp",
-        "xstring": "cpp"
-    },
-    "C_Cpp.errorSquiggles": "Enabled"
+  "files.associations": {
+    "*html": "html",
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "xutility": "cpp",
+    "algorithm": "cpp",
+    "xstring": "cpp",
+    "xhash": "cpp"
+  },
+  "C_Cpp.errorSquiggles": "Enabled"
 }
