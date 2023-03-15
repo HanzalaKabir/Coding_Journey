@@ -6,7 +6,9 @@
     "xutility": "cpp",
     "algorithm": "cpp",
     "xstring": "cpp",
-    "xhash": "cpp"
+    "xhash": "cpp",
+    "vector": "cpp",
+    "stack": "cpp"
   },
   "C_Cpp.errorSquiggles": "Enabled"
 }

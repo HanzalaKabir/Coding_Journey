@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
+#include <queue>
+#include <deque>
 #include <algorithm>
 using namespace std;
 struct node
@@ -19,7 +21,7 @@ node *createLinkedList(int n)
 {
     node *head = NULL;
     node *tail = NULL;
-
+    queue<int> res;
     for (int i = 0; i < n; i++)
     {
         int x;
