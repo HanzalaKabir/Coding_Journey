@@ -96,72 +96,47 @@ node *buildTree(string str)
 
     return root;
 }
-void inOrder(node *root)
+/*method 2*/
+int printLevel(node *root)
 {
-    if (root != NULL)
+    if (root == NULL)
     {
-        inOrder(root->left);
-        cout << (root->data) << " ";
-        inOrder(root->right);
+        return 0;
     }
-}
-/*Implementation of  inorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-        if(!root){
-        return;
-    }
-    trav(res, root->left);
-    res.push_back(root->data);
-    trav(res,root->right);
-    }
-    vector<int> inOrder(Node* root) {
-        // Your code here
-        vector<int> res;
-        trav(res,root);
-        return res;
-    }*/
-void preOrder(node *root)
-{
-    if (root != NULL)
+    queue<node *> q;
+    q.push(root);
+    int max = 0;
+    while (q.empty() == false)
     {
-        cout << (root->data) << " ";
-        preOrder(root->left);
-        preOrder(root->right);
+        vector<int> temp;
+        int count = q.size();
+        for (int i = 0; i < count; i++)
+        {
+            node *curr = q.front();
+            q.pop();
+            temp.push_back(curr->data);
+            if (curr->left != NULL)
+            {
+                q.push(curr->left);
+            }
+            if (curr->right != NULL)
+            {
+                q.push(curr->right);
+            }
+        }
+        if (temp.size() > max)
+        {
+            max = temp.size();
+        }
     }
-}
-/*Implementation of preorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-    if(!root){
-        return;
-    }
-    res.push_back(root->data);
-    trav(res, root->left);
-    trav(res,root->right);
-}
-
-vector <int> preorder(Node* root)
-{
-  vector<int> res;
-  trav(res,root);
-  return res;
-}
-*/
-void postOrder(node *root)
-{
-    if (root != NULL)
-    {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << (root->data) << " ";
-    }
+    return max;
 }
 int main()
 {
     string s;
     getline(cin, s);
-    node *root1 = buildTree(s);
-    preOrder(root1);
-    cout << endl;
-    inOrder(root1);
+    node *root = buildTree(s);
+    int ans = printLevel(root);
+    cout << ans;
     return 0;
 }

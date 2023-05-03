@@ -96,72 +96,56 @@ node *buildTree(string str)
 
     return root;
 }
-void inOrder(node *root)
+vector<int> zigZagTraversal(node *root)
 {
-    if (root != NULL)
+    // Code here
+    vector<int> res;
+    if (root == NULL)
     {
-        inOrder(root->left);
-        cout << (root->data) << " ";
-        inOrder(root->right);
-    }
-}
-/*Implementation of  inorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-        if(!root){
-        return;
-    }
-    trav(res, root->left);
-    res.push_back(root->data);
-    trav(res,root->right);
-    }
-    vector<int> inOrder(Node* root) {
-        // Your code here
-        vector<int> res;
-        trav(res,root);
         return res;
-    }*/
-void preOrder(node *root)
-{
-    if (root != NULL)
+    }
+    queue<node *> q;
+    q.push(root);
+    int i = 1;
+    while (q.empty() == false)
     {
-        cout << (root->data) << " ";
-        preOrder(root->left);
-        preOrder(root->right);
+        int count = q.size();
+        vector<int> vec;
+        for (int j = 0; j < count; j++)
+        {
+            node *temp = q.front();
+            vec.push_back(temp->data);
+            q.pop();
+            if (temp->left != NULL)
+            {
+                q.push(temp->left);
+            }
+            if (temp->right != NULL)
+            {
+                q.push(temp->right);
+            }
+        }
+        if (i % 2 == 0)
+        {
+            reverse(vec.begin(), vec.end());
+        }
+        for (int j = 0; j < vec.size(); j++)
+        {
+            res.push_back(vec[j]);
+        }
+        i++;
     }
-}
-/*Implementation of preorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-    if(!root){
-        return;
-    }
-    res.push_back(root->data);
-    trav(res, root->left);
-    trav(res,root->right);
-}
-
-vector <int> preorder(Node* root)
-{
-  vector<int> res;
-  trav(res,root);
-  return res;
-}
-*/
-void postOrder(node *root)
-{
-    if (root != NULL)
-    {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << (root->data) << " ";
-    }
+    return res;
 }
 int main()
 {
     string s;
     getline(cin, s);
-    node *root1 = buildTree(s);
-    preOrder(root1);
-    cout << endl;
-    inOrder(root1);
+    node *root = buildTree(s);
+    vector<int> res = zigZagTraversal(root);
+    for (int i = 0; i < res.size(); i++)
+    {
+        cout << res[i] << " ";
+    }
     return 0;
 }

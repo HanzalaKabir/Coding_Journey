@@ -9,14 +9,18 @@
 #include <deque>
 #include <algorithm>
 #include <cmath>
-#include <limits.h>
 using namespace std;
+
+// Tree Node
 struct node
 {
     int data;
     node *left;
     node *right;
 };
+vector<int> preorder(struct node *root);
+
+// Utility function to create a new Tree Node
 node *newNode(int val)
 {
     node *temp = new node;
@@ -26,6 +30,8 @@ node *newNode(int val)
 
     return temp;
 }
+
+// Function to Build Tree
 node *buildTree(string str)
 {
     // Corner Case
@@ -52,7 +58,6 @@ node *buildTree(string str)
 
     // Starting from the second element
     int i = 1;
-
     while (!queue.empty() && i < ip.size())
     {
 
@@ -96,72 +101,34 @@ node *buildTree(string str)
 
     return root;
 }
-void inOrder(node *root)
-{
-    if (root != NULL)
-    {
-        inOrder(root->left);
-        cout << (root->data) << " ";
-        inOrder(root->right);
-    }
-}
-/*Implementation of  inorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-        if(!root){
-        return;
-    }
-    trav(res, root->left);
-    res.push_back(root->data);
-    trav(res,root->right);
-    }
-    vector<int> inOrder(Node* root) {
-        // Your code here
-        vector<int> res;
-        trav(res,root);
-        return res;
-    }*/
-void preOrder(node *root)
-{
-    if (root != NULL)
-    {
-        cout << (root->data) << " ";
-        preOrder(root->left);
-        preOrder(root->right);
-    }
-}
-/*Implementation of preorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-    if(!root){
-        return;
-    }
-    res.push_back(root->data);
-    trav(res, root->left);
-    trav(res,root->right);
-}
 
-vector <int> preorder(Node* root)
-{
-  vector<int> res;
-  trav(res,root);
-  return res;
-}
-*/
-void postOrder(node *root)
-{
-    if (root != NULL)
-    {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << (root->data) << " ";
-    }
-}
 int main()
 {
     string s;
     getline(cin, s);
-    node *root1 = buildTree(s);
-    preOrder(root1);
+    node *root = buildTree(s);
+    vector<int> res = preorder(root);
+    for (int i : res)
+        cout << i << " ";
     cout << endl;
-    inOrder(root1);
     return 0;
+}
+
+// Function to return a list containing the preorder traversal of the tree.
+void trav(vector<int> &res, node *root)
+{
+    if (!root)
+    {
+        return;
+    }
+    res.push_back(root->data);
+    trav(res, root->left);
+    trav(res, root->right);
+}
+
+vector<int> preorder(node *root)
+{
+    vector<int> res;
+    trav(res, root);
+    return res;
 }

@@ -96,6 +96,19 @@ node *buildTree(string str)
 
     return root;
 }
+void mirror(node *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    node *temp1 = root->left;
+    node *temp2 = root->right;
+    root->left = temp2;
+    root->right = temp1;
+    mirror(root->left);
+    mirror(root->right);
+}
 void inOrder(node *root)
 {
     if (root != NULL)
@@ -105,63 +118,12 @@ void inOrder(node *root)
         inOrder(root->right);
     }
 }
-/*Implementation of  inorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-        if(!root){
-        return;
-    }
-    trav(res, root->left);
-    res.push_back(root->data);
-    trav(res,root->right);
-    }
-    vector<int> inOrder(Node* root) {
-        // Your code here
-        vector<int> res;
-        trav(res,root);
-        return res;
-    }*/
-void preOrder(node *root)
-{
-    if (root != NULL)
-    {
-        cout << (root->data) << " ";
-        preOrder(root->left);
-        preOrder(root->right);
-    }
-}
-/*Implementation of preorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-    if(!root){
-        return;
-    }
-    res.push_back(root->data);
-    trav(res, root->left);
-    trav(res,root->right);
-}
-
-vector <int> preorder(Node* root)
-{
-  vector<int> res;
-  trav(res,root);
-  return res;
-}
-*/
-void postOrder(node *root)
-{
-    if (root != NULL)
-    {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << (root->data) << " ";
-    }
-}
 int main()
 {
     string s;
     getline(cin, s);
-    node *root1 = buildTree(s);
-    preOrder(root1);
-    cout << endl;
-    inOrder(root1);
+    node *root = buildTree(s);
+    mirror(root);
+    inOrder(root);
     return 0;
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <sstream>
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
@@ -20,7 +21,7 @@ struct node
         left = right = NULL;
     }
 };
-int height(node *root)
+int getSize(node *root)
 {
     if (root == NULL)
     {
@@ -28,18 +29,11 @@ int height(node *root)
     }
     else
     {
-        return max(height(root->left), height(root->right)) + 1;
+        return 1 + getSize(root->left) + getSize(root->right);
     }
 }
 int main()
 {
-    struct node *root = new node(10);
-    root->left = new node(6);
-    root->right = new node(8);
-    root->right->right = new node(7);
-    root->right->right->left = new node(11);
-    root->right->right->right = new node(12);
-    int res = height(root);
-    cout << res;
+    node *root = NULL;
     return 0;
 }

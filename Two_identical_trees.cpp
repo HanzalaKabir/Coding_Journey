@@ -96,63 +96,72 @@ node *buildTree(string str)
 
     return root;
 }
-void inOrder(node *root)
+bool isIdentical(node *r1, node *r2)
 {
-    if (root != NULL)
+    // Your Code here
+    if (r1 == NULL && r2 == NULL)
     {
-        inOrder(root->left);
-        cout << (root->data) << " ";
-        inOrder(root->right);
+        return true;
     }
-}
-/*Implementation of  inorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-        if(!root){
-        return;
-    }
-    trav(res, root->left);
-    res.push_back(root->data);
-    trav(res,root->right);
-    }
-    vector<int> inOrder(Node* root) {
-        // Your code here
-        vector<int> res;
-        trav(res,root);
-        return res;
-    }*/
-void preOrder(node *root)
-{
-    if (root != NULL)
+    if (r1 == NULL && r2 != NULL || r1 != NULL && r2 == NULL)
     {
-        cout << (root->data) << " ";
-        preOrder(root->left);
-        preOrder(root->right);
+        return false;
     }
-}
-/*Implementation of preorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-    if(!root){
-        return;
-    }
-    res.push_back(root->data);
-    trav(res, root->left);
-    trav(res,root->right);
-}
+    queue<node *> q1;
+    q1.push(r1);
+    queue<node *> q2;
+    q2.push(r2);
+    while (q1.empty() == false && q2.empty() == false)
+    {
 
-vector <int> preorder(Node* root)
-{
-  vector<int> res;
-  trav(res,root);
-  return res;
-}
-*/
-void postOrder(node *root)
-{
-    if (root != NULL)
+        int count1 = q1.size();
+        int count2 = q2.size();
+        vector<int> vec1;
+        for (int j = 0; j < count1; j++)
+        {
+            node *temp = q1.front();
+            vec1.push_back(temp->data);
+            q1.pop();
+            if (temp->left != NULL)
+            {
+                q1.push(temp->left);
+            }
+            if (temp->right != NULL)
+            {
+                q1.push(temp->right);
+            }
+        }
+        vector<int> vec2;
+        for (int j = 0; j < count2; j++)
+        {
+            node *temp = q2.front();
+            vec2.push_back(temp->data);
+            q2.pop();
+            if (temp->left != NULL)
+            {
+                q2.push(temp->left);
+            }
+            if (temp->right != NULL)
+            {
+                q2.push(temp->right);
+            }
+        }
+        if (vec1 == vec2)
+        {
+            continue;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    if (q1.empty() == true && q2.empty() == true)
     {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << (root->data) << " ";
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 int main()
@@ -160,8 +169,17 @@ int main()
     string s;
     getline(cin, s);
     node *root1 = buildTree(s);
-    preOrder(root1);
-    cout << endl;
-    inOrder(root1);
+    string r;
+    getline(cin, r);
+    node *root2 = buildTree(r);
+    bool check = isIdentical(root1, root2);
+    if (check == true)
+    {
+        cout << "Yes";
+    }
+    else
+    {
+        cout << "No";
+    }
     return 0;
 }

@@ -96,72 +96,72 @@ node *buildTree(string str)
 
     return root;
 }
-void inOrder(node *root)
+// void view(node *root, vector<int> &res)
+// {
+//     if (!root)
+//     {
+//         return;
+//     }
+//     else
+//     {
+//         res.push_back(root->data);
+//         if (root->left != NULL)
+//         {
+//             view(root->left, res);
+//         }
+//         if (root->left == NULL && root->right != NULL)
+//         {
+//             view(root->right, res);
+//         }
+//     }
+// }
+vector<int> view(node *root)
 {
-    if (root != NULL)
+    vector<int> res;
+    if (root == NULL)
     {
-        inOrder(root->left);
-        cout << (root->data) << " ";
-        inOrder(root->right);
-    }
-}
-/*Implementation of  inorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-        if(!root){
-        return;
-    }
-    trav(res, root->left);
-    res.push_back(root->data);
-    trav(res,root->right);
-    }
-    vector<int> inOrder(Node* root) {
-        // Your code here
-        vector<int> res;
-        trav(res,root);
         return res;
-    }*/
-void preOrder(node *root)
-{
-    if (root != NULL)
+    }
+    queue<node *> q;
+    q.push(root);
+    while (q.empty() == false)
     {
-        cout << (root->data) << " ";
-        preOrder(root->left);
-        preOrder(root->right);
-    }
-}
-/*Implementation of preorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-    if(!root){
-        return;
-    }
-    res.push_back(root->data);
-    trav(res, root->left);
-    trav(res,root->right);
-}
+        int count = q.size();
+        for (int i = 0; i < count; i++)
+        {
+            node *temp = q.front();
+            q.pop();
+            if (i == 0)
+            {
+                res.push_back(temp->data);
+            }
 
-vector <int> preorder(Node* root)
-{
-  vector<int> res;
-  trav(res,root);
-  return res;
-}
-*/
-void postOrder(node *root)
-{
-    if (root != NULL)
-    {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << (root->data) << " ";
+            if (temp->left != NULL)
+            {
+                q.push(temp->left);
+            }
+            if (temp->right != NULL)
+            {
+                q.push(temp->right);
+            }
+        }
     }
+    return res;
+}
+vector<int> left(node *root)
+{
+    vector<int> res = view(root);
+    return res;
 }
 int main()
 {
     string s;
     getline(cin, s);
-    node *root1 = buildTree(s);
-    preOrder(root1);
-    cout << endl;
-    inOrder(root1);
+    node *root = buildTree(s);
+    vector<int> res = left(root);
+    for (int i = 0; i < res.size(); i++)
+    {
+        cout << res[i] << " ";
+    }
     return 0;
 }

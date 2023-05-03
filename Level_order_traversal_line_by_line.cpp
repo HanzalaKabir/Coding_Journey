@@ -9,7 +9,6 @@
 #include <deque>
 #include <algorithm>
 #include <cmath>
-#include <limits.h>
 using namespace std;
 struct node
 {
@@ -96,72 +95,77 @@ node *buildTree(string str)
 
     return root;
 }
-void inOrder(node *root)
+/*method 1*/
+int printLevel(node *root)
 {
-    if (root != NULL)
+    if (root == NULL)
     {
-        inOrder(root->left);
-        cout << (root->data) << " ";
-        inOrder(root->right);
+        return 0;
     }
-}
-/*Implementation of  inorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-        if(!root){
-        return;
-    }
-    trav(res, root->left);
-    res.push_back(root->data);
-    trav(res,root->right);
-    }
-    vector<int> inOrder(Node* root) {
-        // Your code here
-        vector<int> res;
-        trav(res,root);
-        return res;
-    }*/
-void preOrder(node *root)
-{
-    if (root != NULL)
+    queue<node *> q;
+    q.push(root);
+    q.push(NULL);
+    int size = 0;
+    while (q.size() > 1)
     {
-        cout << (root->data) << " ";
-        preOrder(root->left);
-        preOrder(root->right);
+        node *curr = q.front();
+        q.pop();
+        if (curr == NULL)
+        {
+            cout << endl;
+            q.push(NULL);
+            continue;
+        }
+        size++;
+        cout << curr->data << " ";
+        if (curr->left != NULL)
+        {
+            q.push(curr->left);
+        }
+        if (curr->right != NULL)
+        {
+            q.push(curr->right);
+        }
     }
-}
-/*Implementation of preorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-    if(!root){
-        return;
-    }
-    res.push_back(root->data);
-    trav(res, root->left);
-    trav(res,root->right);
+    return size;
 }
 
-vector <int> preorder(Node* root)
-{
-  vector<int> res;
-  trav(res,root);
-  return res;
-}
-*/
-void postOrder(node *root)
-{
-    if (root != NULL)
-    {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << (root->data) << " ";
-    }
-}
+/*method 2*/
+// void printLevel(node *root)
+// {
+//     if (root == NULL)
+//     {
+//         return;
+//     }
+//     queue<node *> q;
+//     q.push(root);
+//     while (q.empty() == false)
+//     {
+//         int count = q.size();
+//         for (int i = 0; i < count; i++)
+//         {
+//             node *curr = q.front();
+//             q.pop();
+//             cout << curr->data << " ";
+//             if (curr->left != NULL)
+//             {
+//                 q.push(curr->left);
+//             }
+//             if (curr->right != NULL)
+//             {
+//                 q.push(curr->right);
+//             }
+//         }
+//         cout << endl;
+//     }
+// }
 int main()
 {
     string s;
     getline(cin, s);
-    node *root1 = buildTree(s);
-    preOrder(root1);
-    cout << endl;
-    inOrder(root1);
+    node *root = buildTree(s);
+    int size = printLevel(root);
+    cout << endl
+         << size;
     return 0;
 }

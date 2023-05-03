@@ -9,17 +9,18 @@
 #include <deque>
 #include <algorithm>
 #include <cmath>
+#include <limits.h>
 using namespace std;
 struct node
 {
-    int data;
+    int key;
     node *left;
     node *right;
 };
 node *newNode(int val)
 {
     node *temp = new node;
-    temp->data = val;
+    temp->key = val;
     temp->left = NULL;
     temp->right = NULL;
 
@@ -95,20 +96,28 @@ node *buildTree(string str)
 
     return root;
 }
-
-void printLevel(node *root)
+int printLevel(node *root)
 {
     if (root == NULL)
     {
-        return;
+        return 0;
     }
     queue<node *> q;
     q.push(root);
-    while (q.empty() == false)
+    q.push(NULL);
+    int size = 0;
+    while (q.size() > 1)
     {
         node *curr = q.front();
         q.pop();
-        cout << curr->data << " ";
+        if (curr == NULL)
+        {
+            cout << endl;
+            q.push(NULL);
+            continue;
+        }
+        size++;
+        cout << curr->key << " ";
         if (curr->left != NULL)
         {
             q.push(curr->left);
@@ -118,12 +127,88 @@ void printLevel(node *root)
             q.push(curr->right);
         }
     }
+    return size;
+}
+
+int sum(node *root, int check)
+{
+    if (check == 1)
+    {
+        if (root != NULL)
+        {
+            if (root->left == NULL && root->right != NULL)
+            {
+                if (root->right->key == root->key)
+                {
+                    check = sum(root->right, check);
+                    if (check != 1)
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    check = 0;
+                    check = sum(root->right, check);
+                }
+            }
+            if (root->right == NULL && root->left != NULL)
+            {
+                if (root->left->key == root->key)
+                {
+                    check = sum(root->left, check);
+                    if (check != 1)
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    check = 0;
+                    check = sum(root->left, check);
+                }
+            }
+            if (root->left != NULL && root->right != NULL)
+            {
+                if (root->key == root->left->key + root->right->key)
+                {
+                    check = sum(root->left, check);
+                    if (check != 1)
+                    {
+                        return check;
+                    }
+                    check = sum(root->right, check);
+                    if (check != 1)
+                    {
+                        return check;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        if (root == NULL)
+        {
+            return check;
+        }
+    }
+    else
+    {
+        return check;
+    }
 }
 int main()
 {
     string s;
     getline(cin, s);
     node *root = buildTree(s);
-    printLevel(root);
+    int size = printLevel(root);
+    cout << endl
+         << size;
+    int res = sum(root, 1);
+    cout << endl
+         << res;
     return 0;
 }
