@@ -105,29 +105,30 @@ void inOrder(node *root)
         inOrder(root->right);
     }
 }
-/*Implementation of  inorder for getting tree elements:
-void trav(vector<int> &res, Node *root){
-        if(!root){
-        return;
-    }
-    trav(res, root->left);
-    res.push_back(root->data);
-    trav(res,root->right);
-    }
-    vector<int> inOrder(Node* root) {
-        // Your code here
-        vector<int> res;
-        trav(res,root);
-        return res;
-    }*/
+// Implementation of  inorder for getting tree elements:
+//  void trav(vector<int> &res, Node *root){
+//          if(!root){
+//          return;
+//      }
+//      trav(res, root->left);
+//      res.push_back(root->data);
+//      trav(res,root->right);
+//      }
+//      vector<int> inOrder(Node* root) {
+//          Your code here
+//          vector<int> res;
+//          trav(res,root);
+//          return res;
+//      }
 void preOrder(node *root)
 {
-    if (root != NULL)
+    if (!root)
     {
-        cout << (root->data) << " ";
-        preOrder(root->left);
-        preOrder(root->right);
+        return;
     }
+    cout << root->data;
+    preOrder(root->left);
+    preOrder(root->right);
 }
 /*Implementation of preorder for getting tree elements:
 void trav(vector<int> &res, Node *root){
@@ -159,9 +160,6 @@ int main()
 {
     string s;
     getline(cin, s);
-    node *root1 = buildTree(s);
-    preOrder(root1);
-    cout << endl;
-    inOrder(root1);
-    return 0;
+    node *root = buildTree(s);
+    inOrder(root);
 }

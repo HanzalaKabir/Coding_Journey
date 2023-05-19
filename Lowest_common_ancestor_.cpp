@@ -9,6 +9,7 @@
 #include <deque>
 #include <algorithm>
 #include <cmath>
+#include <limits.h>
 using namespace std;
 struct node
 {
@@ -95,48 +96,28 @@ node *buildTree(string str)
 
     return root;
 }
-/*method 1*/
-// int printLevel(node *root)
-// {
-//     if (root == NULL)
-//     {
-//         return 0;
-//     }
-//     queue<node *> q;
-//     q.push(root);
-//     q.push(NULL);
-//     int size = 0;
-//     while (q.size() > 1)
-//     {
-//         node *curr = q.front();
-//         q.pop();
-//         if (curr == NULL)
-//         {
-//             cout << endl;
-//             q.push(NULL);
-//             continue;
-//         }
-//         size++;
-//         cout << curr->data << " ";
-//         if (curr->left != NULL)
-//         {
-//             q.push(curr->left);
-//         }
-//         if (curr->right != NULL)
-//         {
-//             q.push(curr->right);
-//         }
-//     }
-//     return size;
-// }
-
-/*method 2*/
-void printLevel(node *root)
+bool search(node *root, int num)
 {
     if (root == NULL)
     {
-        return;
+        return false;
     }
+    if (root->data == num)
+    {
+        return true;
+    }
+    bool res = search(root->left, num);
+    if (res)
+    {
+        return true;
+    }
+    bool res2 = search(root->right, num);
+    return res2;
+}
+
+node *LCA(node *root, int n1, int n2)
+{
+    vector<node *> temp1, temp2;
     queue<node *> q;
     q.push(root);
     while (q.empty() == false)
@@ -146,7 +127,14 @@ void printLevel(node *root)
         {
             node *curr = q.front();
             q.pop();
-            cout << curr->data << " ";
+            if (search(curr, n1))
+            {
+                temp1.push_back(curr);
+            }
+            if (search(curr, n2))
+            {
+                temp2.push_back(curr);
+            }
             if (curr->left != NULL)
             {
                 q.push(curr->left);
@@ -156,14 +144,31 @@ void printLevel(node *root)
                 q.push(curr->right);
             }
         }
-        cout << endl;
     }
+    int size = min(temp1.size(), temp2.size());
+    node *curr;
+    for (int i = 0; i < size; i++)
+    {
+        if (temp1[i]->data == temp2[i]->data)
+        {
+            curr = temp1[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    return curr;
 }
+
 int main()
 {
     string s;
     getline(cin, s);
     node *root = buildTree(s);
-    printLevel(root);
+    int n1, n2;
+    cin >> n1 >> n2;
+    node *res = LCA(root, n1, n2);
+    cout << res->data;
     return 0;
 }
